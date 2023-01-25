@@ -5,13 +5,24 @@ metadata:
 build:
   local:
     concurrency: 0 # Build all the images in the array
-  # tagPolicy:
+  tagPolicy:
   #  envTemplate:
   #    template: "{{.APP_VERSION}}"
-  tagPolicy:
-    gitCommit:
-      variant: CommitSha
-      prefix:  "api-"
+  # ---
+ #   gitCommit:
+ #     variant: AbbrevCommitSha
+ #     prefix:  "api-"
+    customTemplate:
+      template: "{{.PREF}}_{{.SUFF}}"
+      components:
+        - name: PREF
+          dateTime:
+            format: "2006-01-02"
+            timezone: "Local"
+        - name: SUFF
+          gitCommit:
+            variant: AbbrevCommitSha
+            prefix: "api_"
   artifacts:
   - image: antgonto/kubelabs_privateapi_skaffold
     docker:
@@ -23,3 +34,30 @@ manifests:
     - kube/ns.yaml
     - kube/deploy.yaml
     - kube/svc.yaml
+profiles:
+  - name: dev
+    patches:
+    - op: replace
+      path: /build/artifacts/0/docker/buildArgs/APP_ENV
+      value: "{{.APP_ENV_DEV}}"
+  - name: stage
+    activation:
+      - kubeContext: docker-desktop
+    patches:
+    - op: replace
+      path: /build/artifacts/0/docker/buildArgs/APP_ENV
+      value: "{{.APP_ENV_DEV}}"
+#      artifacts:
+#      - image: antgonto/kubelabs_privateapi_skaffold
+#        docker:
+#          dockerfile: Dockerfile
+#          buildArgs:
+#            APP_ENV: "{{.APP_ENV_DEV}}"
+#  - name: stage
+#    build:
+#      artifacts:
+#      - image: antgonto/kubelabs_privateapi_skaffold
+#        docker:
+#          dockerfile: Dockerfile
+#          buildArgs:
+#            APP_ENV: "{{.APP_ENV_DEV}}"

@@ -62,3 +62,4 @@ SET APP_VERSION=4.0.0
 
 skaffold dev --tag=4.0.1
 
+export APP_ENV_STAGE="{ \"APP_NAME\":\"private-API\", \"NODE_ENV\":\"stage\", \"NODE_PORT\":\"3002\", \"TOKEN_LIMIT\":\"7d\", \"TOKEN_SECRET\":\"PASS\" }"
