@@ -1,0 +1,25 @@
+apiVersion: skaffold/v4beta1
+kind: Config
+metadata:
+  name: private-api
+build:
+  local:
+    concurrency: 0 # Build all the images in the array
+  # tagPolicy:
+  #  envTemplate:
+  #    template: "{{.APP_VERSION}}"
+  tagPolicy:
+    gitCommit:
+      variant: CommitSha
+      prefix:  "api-"
+  artifacts:
+  - image: antgonto/kubelabs_privateapi_skaffold
+    docker:
+      dockerfile: Dockerfile
+      buildArgs:
+        APP_ENV: "{{.APP_ENV_DEV}}"
+manifests:
+  rawYaml:
+    - kube/ns.yaml
+    - kube/deploy.yaml
+    - kube/svc.yaml
