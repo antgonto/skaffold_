@@ -53,6 +53,7 @@ skaffold run --port-forward
 <!-- Clean resources -->
 skaffold delete
 
+ skaffold dev --profile dev
 
 <!-- Option 1: environment variable -->
 SET APP_VERSION=4.0.0
@@ -63,3 +64,18 @@ SET APP_VERSION=4.0.0
 skaffold dev --tag=4.0.1
 
 export APP_ENV_STAGE="{ \"APP_NAME\":\"private-API\", \"NODE_ENV\":\"stage\", \"NODE_PORT\":\"3002\", \"TOKEN_LIMIT\":\"7d\", \"TOKEN_SECRET\":\"PASS\" }"
+
+- GitOps - https://learning.codefresh.io/
+# Kustomize
+
+[Install](https://kubectl.docs.kubernetes.io/installation/kustomize/)
+
+ kustomize build kustomize/overlays/dev > temp.yaml
+
+
+### Force namespace deletion
+kubectl delete ns istio-system --grace-period=0 --force
+
+kubectl get namespace "MY_NAMESPACE" -o json \ 
+  | tr -d "\n" | sed "s/\"finalizers\": \[[^]]\+\]/\"finalizers\": []/" \
+  | kubectl replace --raw /api/v1/namespaces/MY_NAMESPACE/finalize -f -

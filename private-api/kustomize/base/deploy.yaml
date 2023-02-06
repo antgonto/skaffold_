@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-private-api
+#  namespace: private-dev
+  labels:
+    app:  private-api
+spec:
+  selector:
+    matchLabels:
+      app: private-api
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        app: private-api
+      annotations:
+        akeyless/enabled: "true"
+    spec:
+      containers:
+      - name: private-api
+        image: antgonto/kubelabs_privateapi_skaffold:latest
+        command:
+          - "node"
+          - "./dist/main.js"
+#          - "echo First Secret `cat /akeyless/secrets/kube/secret1` && echo Second Secret: $MY_SECRET && sleep 10000"
+        env:
+        - name: APP_ENV
+          value: akeyless:/kube/APP_ENV

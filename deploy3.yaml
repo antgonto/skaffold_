@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: deploy-private-api
+  namespace: private-dev
+  labels:
+    app:  private-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: private-api
+  template:
+    metadata:
+      name: private-api
+      labels:
+        app: private-api
+      annotations:
+        akeyless/enabled: "true"
+    spec:
+      containers:
+      - name: private-api
+#        envFrom:
+#          - configMapRef:
+#              name: app-env
+        image: alpine
+        #antgonto/kubelabs_privateapi_skaffold:latest
+ #       ports:
+ #       - containerPort: 3002
+ #         name: private-api
+ #       - containerPort: 3082
+ #         name: healthcheck
+        env:
+          #- name: APP_ENV
+          - name: MY_SECRET
+            value: akeyless:/kube/secret2
+            # value: akeyless:/kube/APP_ENV
+#        resources:
+#          limits:
+#            cpu: 200m
+#            memory: 200Mi
+#          requests:
+#            cpu: 10m
+#            memory: 100Mi
+#        livenessProbe:
+#          httpGet:
+#            path: /healthcheck
+#            port: 3082
+#          initialDelaySeconds: 10
+#          periodSeconds: 30
+#          timeoutSeconds: 5

@@ -27,26 +27,35 @@ build:
   - image: antgonto/kubelabs_privateapi_skaffold
     docker:
       dockerfile: Dockerfile
-      buildArgs:
-        APP_ENV: "{{.APP_ENV_DEV}}"
-manifests:
-  rawYaml:
-    - kube/ns.yaml
-    - kube/deploy.yaml
-    - kube/svc.yaml
+#      buildArgs:
+#        APP_ENV: "{{.APP_ENV_DEV}}"
+# manifests:
+#  rawYaml:
+#    - kube/ns.yaml
+#    - kube/deploy.yaml
+#    - kube/svc.yaml
 profiles:
   - name: dev
-    patches:
-    - op: replace
-      path: /build/artifacts/0/docker/buildArgs/APP_ENV
-      value: "{{.APP_ENV_DEV}}"
+#    patches:
+#    - op: replace
+#      path: /build/artifacts/0/docker/buildArgs/APP_ENV
+#      value: "{{.APP_ENV_DEV}}"
+
+    manifests:
+      kustomize:
+        paths:
+          - kustomize/overlays/dev
   - name: stage
-    activation:
-      - kubeContext: docker-desktop
-    patches:
-    - op: replace
-      path: /build/artifacts/0/docker/buildArgs/APP_ENV
-      value: "{{.APP_ENV_DEV}}"
+    # activation:
+    #  - kubeContext: docker-desktop
+#    patches:
+#    - op: replace
+#      path: /build/artifacts/0/docker/buildArgs/APP_ENV
+#      value: "{{.APP_ENV_DEV}}"
+    manifests:
+      kustomize:
+        paths:
+          - kustomize/overlays/stage
 #      artifacts:
 #      - image: antgonto/kubelabs_privateapi_skaffold
 #        docker:
