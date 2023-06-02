@@ -1,0 +1,14 @@
+apiVersion: skaffold/v4beta2
+kind: Config
+metadata:
+  name: api
+build:
+  artifacts:
+  - image: api_skaffold
+    docker:
+      dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - kube/ns.yaml
+    - kube/deploy.yaml
+    - kube/svc.yaml

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-akeyless
+  namespace: socdev
+  labels:
+    app: api
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      name: api
+      labels:
+        app: api
+
+    spec:
+      containers:
+      - name: api
+        image: api_skaffold:latest
+        env:
+        - name: APP_ENV
+          value: "AnyValue"
+        ports:
+        - containerPort: 3246
+          name: api
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 10m
+            memory: 100Mi
