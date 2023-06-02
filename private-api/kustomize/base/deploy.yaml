@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: private-api
-        image: antgonto/kubelabs_privateapi_skaffold:latest
+        image: antgonto/kubelabs_privateapi_skaffold
         command:
           - "node"
           - "./dist/main.js"

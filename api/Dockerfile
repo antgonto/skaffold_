@@ -23,7 +23,7 @@ ENV APP_HOME=/home/app/code
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-COPY ./requirements.txt .
+COPY requirements.txt .
 RUN pip3 install -r requirements.txt --index-url https://repository.walmart.com/repository/pypi-proxy/simple/
 
 # add app

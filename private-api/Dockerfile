@@ -18,9 +18,9 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./
 
-# ARG APP_ENV
-# ENV APP_ENV=${APP_ENV}
-# RUN echo $APP_ENV
+ARG APP_ENV
+ENV APP_ENV=${APP_ENV}
+RUN echo $APP_ENV
 
 EXPOSE 3002 3082
 

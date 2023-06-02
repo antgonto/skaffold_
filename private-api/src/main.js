@@ -32,7 +32,7 @@ router.get('/private', (req, res) => {
 })
 
 app.listen(config.NODE_PORT, () => {
-  console.log(`Rest API on port ${config.NODE_PORT}`)
+  console.log(`Rest API on  port ${config.NODE_PORT}`)
 })
 
 // health checks

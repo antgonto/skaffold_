@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: private-api
-        image: antgonto/kubelabs_privateapi_skaffold:latest
+        image: skaffold
         ports:
         - containerPort: 3002
           name: private-api
